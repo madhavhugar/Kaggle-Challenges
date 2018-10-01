@@ -61,21 +61,21 @@ class TitanicCleaner:
         """
         median_ages = self.titanic_df[['Title', 'Age']].groupby(by='Title').median()
 
-        def guess_age(title: str):
-            if title is 'Master':
+        def guess_age(row: pd.DataFrame):
+            if row['Title'] is 'Master':
                 return median_ages.loc['Master'].Age
-            elif title is 'Mr':
+            elif row['Title'] is 'Mr':
                 return median_ages.loc['Mr'].Age
-            elif title is 'Mrs':
+            elif row['Title'] is 'Mrs':
                 return median_ages.loc['Mrs'].Age
-            elif title is 'Miss':
+            elif row['Title'] is 'Miss':
                 return median_ages.loc['Miss'].Age
-            elif title is 'Rare':
+            elif row['Title'] is 'Rare':
                 return median_ages.loc['Rare'].Age
             else:
                 return median_ages.loc['Mr'].Age
 
         self.titanic_df['GuessedAge'] = self.titanic_df.apply(guess_age, axis=1)
-        self.titanic_df['Age'].fillna(self.titanic_df['GuessedAge'])
+        self.titanic_df['Age'].fillna(self.titanic_df['GuessedAge'], inplace=True)
         self.titanic_df.drop(labels='GuessedAge', inplace=True, axis=1)
         return self.titanic_df

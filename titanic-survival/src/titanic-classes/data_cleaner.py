@@ -1,14 +1,22 @@
 """Includes functions to help clean the data"""
 import pandas as pd
-import numpy as np
 
 
 class TitanicCleaner:
 
     def __init__(self, titanic_df: pd.DataFrame):
+        """
+        Constructor for TitanicCleaner class
+        :param titanic_df:
+        """
         self.titanic_df = titanic_df
 
     def display_head(self, rows: int = 5) -> pd.DataFrame:
+        """
+        Displays the titanic_df Dataframe
+        :param rows: number of rows to be displayed
+        :return: Head of Titanic Dataframe
+        """
         return self.titanic_df.head(rows)
 
     def remove_irrelavant_features(self) -> pd.DataFrame:
@@ -38,7 +46,7 @@ class TitanicCleaner:
 
     def replace_null_embarked(self) -> pd.DataFrame:
         """
-        Replaces null values in Embarked and Age
+        Replaces null values in Embarked
         We replace null values in Embarked with the mode (highest frequency of value)
         :return: Titanic Dataframe
         """
@@ -46,12 +54,12 @@ class TitanicCleaner:
         self.titanic_df.fillna(value=embarked_mode)
         return self.titanic_df
 
-    def replace_null_age(self, concat_df: pd.DataFrame) -> pd.DataFrame:
+    def replace_null_age(self) -> pd.DataFrame:
         """
         We guess the age based on the Title. We find median age of each Title group and assign that value
         :return: Titanic Dataframe
         """
-        median_ages = concat_df[['Title', 'Age']].groupby(by='Title').median()
+        median_ages = self.titanic_df[['Title', 'Age']].groupby(by='Title').median()
 
         def guess_age(title: str):
             if title is 'Master':
@@ -67,5 +75,7 @@ class TitanicCleaner:
             else:
                 return median_ages.loc['Mr'].Age
 
-        self.titanic_df = self.titanic_df.apply(lambda row: guess_age(row.Title) if np.nan(row.Age) else row.Title, axis=1)
+        self.titanic_df['GuessedAge'] = self.titanic_df.apply(guess_age, axis=1)
+        self.titanic_df['Age'].fillna(self.titanic_df['GuessedAge'])
+        self.titanic_df.drop(labels='GuessedAge', inplace=True, axis=1)
         return self.titanic_df

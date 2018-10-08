@@ -56,7 +56,7 @@ class TitanicCleaner:
 
     def replace_null_age(self) -> pd.DataFrame:
         """
-        We guess the age based on the Title. We find median age of each Title group and assign that value
+        We impute the age based on the Title. We find median age of each Title group and assign that value
         :return: Titanic Dataframe
         """
         median_ages = self.titanic_df[['Title', 'Age']].groupby(by='Title').median()
@@ -78,4 +78,39 @@ class TitanicCleaner:
         self.titanic_df['GuessedAge'] = self.titanic_df.apply(guess_age, axis=1)
         self.titanic_df['Age'].fillna(self.titanic_df['GuessedAge'], inplace=True)
         self.titanic_df.drop(labels='GuessedAge', inplace=True, axis=1)
+        return self.titanic_df
+
+    def combine_family_features(self) -> pd.DataFrame:
+        """
+        We combine the number of parents/children feature and number of siblings
+        :return: Titanic Dataframe
+        """
+        self.titanic_df['Family'] = self.titanic_df['Parch'] + self.titanic_df['SibSp']
+        self.titanic_df.drop(labels=['Parch', 'SibSp'], inplace=True, axis=1)
+        return self.titanic_df
+
+    def get_dummies_categorical_features(self) -> pd.DataFrame:
+        """
+        We convert Sex, Title and Embarked into categorical features
+        :return:
+        """
+        self.titanic_df['Sex'] = pd.Categorical(self.titanic_df['Sex'])
+        self.titanic_df['Title'] = pd.Categorical(self.titanic_df['Title'])
+        self.titanic_df['Embarked'] = pd.Categorical(self.titanic_df['Embarked'])
+        self.titanic_df = pd.get_dummies(self.titanic_df, drop_first=True)
+        return self.titanic_df
+
+    def bin_age(self, age_group: list, group_names: list) -> pd.DataFrame:
+        self.titanic_df['Age'] = pd.cut(self.titanic_df['Age'], age_group, labels=group_names)
+        return self.titanic_df
+
+    def bin_fare(self, fare_group: list, group_names: list) -> pd.DataFrame:
+        self.titanic_df['Fare'] = pd.cut(self.titanic_df['Fare'], fare_group, labels=group_names)
+        return self.titanic_df
+
+    def get_titanic_df(self) -> pd.DataFrame:
+        """
+        We return the Titanic Dataframe
+        :return: Returns features and target separately
+        """
         return self.titanic_df

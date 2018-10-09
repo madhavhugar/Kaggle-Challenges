@@ -117,3 +117,12 @@ class TitanicCleaner:
         :return: Returns features and target separately
         """
         return self.titanic_df
+
+    def get_feature_target(self) -> (pd.DataFrame, pd.Series):
+        """
+        We return features and target as a tuple
+        :return: tuple(features Dataframe, target Dataframe)
+        """
+        df_features = self.titanic_df.loc[:, self.titanic_df.columns != 'Survived']
+        df_target = self.titanic_df.loc[:, self.titanic_df.columns == 'Survived']
+        return df_features, df_target

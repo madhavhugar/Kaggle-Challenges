@@ -104,8 +104,11 @@ class TitanicCleaner:
         self.titanic_df['Age'] = pd.cut(self.titanic_df['Age'], age_group, labels=group_names)
         return self.titanic_df
 
-    def bin_fare(self, fare_group: list, group_names: list) -> pd.DataFrame:
-        self.titanic_df['Fare'] = pd.cut(self.titanic_df['Fare'], fare_group, labels=group_names)
+    def bin_fare_pclass(self, fare_group: list, group_names: list) -> pd.DataFrame:
+        df_fare_class = pd.cut((self.titanic_df['Fare'] * self.titanic_df['Pclass']),\
+                                bins=fare_group, labels=group_names)
+        self.titanic_df['Fare*Pclass'] = df_fare_class
+        self.titanic_df.drop(labels=['Fare'], inplace=True, axis=1)
         return self.titanic_df
 
     def get_titanic_df(self) -> pd.DataFrame:

@@ -20,3 +20,13 @@ Navigate to the notebook and start jupyter notebook
 cd src/analysis/titanic-survival
 jupyter notebook
 ```
+
+[//]: <> (New concepts learnt)
+
+[//]: <> ([Dummy variable trap])
+
+### Learning sources
+
+- Book - Machine learning with Python from scratch
+- Kaggle Notebook 
+[data-analysis-and-feature-extraction-with-python](https://www.kaggle.com/pmarcelino/data-analysis-and-feature-extraction-with-python)

@@ -1,0 +1,17 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+boto3 = "*"
+scikit-learn = "==0.19.1"
+numpy = "==1.14.3"
+pandas = "==0.23.0"
+scipy = "==1.1.0"
+joblib = "*"
+
+[requires]
+python_version = "3.6"

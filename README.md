@@ -1,7 +1,7 @@
 ## Kaggle Challenges
 
-My interpreted solutions for kaggle challenges. 
+My solutions for kaggle challenges. 
 
-#### Titanic survivor challenge
+##### What's cooking
+##### Titanic survivor challenge
 
-- Analysis notebook

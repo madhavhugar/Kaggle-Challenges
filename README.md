@@ -2,13 +2,20 @@
 
 My solutions for kaggle challenges. 
 
-##### What's cooking - [Machine Learning](whatscooking/whats-cooking.ipynb) - [Engineering](whatscooking/)
+#### What's cooking 
 
-Information about the API:
+- [Machine Learning](whatscooking/whats-cooking.ipynb) 
+- [Engineering](whatscooking/)
 
-`curl https://y139r04032.execute-api.eu-central-1.amazonaws.com/dev/kaggle/whatsCooking/info`
+##### Invoke the API
 
-Prediction from the deployed model. Feel free to replace the ingredients. To execute the API execute:
+GET information about the service:
+
+```
+curl https://y139r04032.execute-api.eu-central-1.amazonaws.com/dev/kaggle/whatsCooking/info
+```
+
+POST features to get prediction from the deployed model. Feel free to replace the ingredients. To execute the API, run:
 
 ```
 curl -X POST https://y139r04032.execute-api.eu-central-1.amazonaws.com/dev/kaggle/whatsCooking/predict -d '{"ingredients": ["garam masala, onion, salt"]}' -H  "x-api-key: 1audCQKc3s321n03ZcrWj6doJtwYu0DE2LGDiViO" -H "content-type:application/json"

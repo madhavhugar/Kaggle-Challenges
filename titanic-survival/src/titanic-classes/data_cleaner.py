@@ -114,7 +114,7 @@ class TitanicCleaner:
     def get_titanic_df(self) -> pd.DataFrame:
         """
         We return the Titanic Dataframe
-        :return: Returns features and target separately
+        :return: Returns features and target
         """
         return self.titanic_df
 

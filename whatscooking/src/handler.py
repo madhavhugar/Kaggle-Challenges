@@ -28,7 +28,10 @@ def get_model(model_name):
 
 def predict(event, context):
     """
+    Predicts the cuisine given a set of ingredients
 
+    :param event: aws lambda event payload
+    :param context: aws lambda context
     :return: None
     """
     body_parsed = json.loads(event['body'])
@@ -42,10 +45,16 @@ def predict(event, context):
     vect_prediction = logisticr_model.predict(x_transformed)
     prediction = label_encoder.inverse_transform(vect_prediction)
     print(f'For the ingredients {ingredients} the predicted cuisine is {prediction[0]}')
-    return create_http_response(f'{prediction[0]}\n')
+    return create_http_response(f'\n\nPredicted cuisine: {prediction[0]}\n\n')
 
 
 def create_http_response(body):
+    """
+    Creates a HTTP Response on success
+
+    :param: the body of the HTTP response
+    :return: HTTP Response
+    """
 
     return {"statusCode": 200, "body": body}
 
@@ -54,9 +63,9 @@ def info(event, context):
     """
     Information about the /kaggle/whatsCooking API
 
-    :param event: lambda event payload
-    :param context: lambda context
-    :return: string
+    :param event: aws lambda event payload
+    :param context: aws lambda context
+    :return: HTTP Response with challenge information
     """
     description = 'Given a set of ingredients, predicts the cuisine'
     input_types = 'Pass the input in the form of a JSON object, containing an array of ingredients'
@@ -67,5 +76,6 @@ def info(event, context):
                 "-d '{\"ingredients\": [\"garam masala, onion, salt\"]}' " \
                 "-H  \"x-api-key: 1audCQKc3s321n03ZcrWj6doJtwYu0DE2LGDiViO\" " \
                 "-H \"content-type:application/json\""
-
-    return create_http_response(f'\n\n{description}\n{input_types}\n{request_type}\n{example_curl}\n\n{curl_post}\n\n')
+    example_output = 'Output - Predicted cuisine: indian'
+    body = f'\n\n{description}\n{input_types}\n{request_type}\n{example_curl}\n\n{curl_post}\n\n{example_output}'
+    return create_http_response(body)
